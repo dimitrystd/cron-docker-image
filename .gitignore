@@ -4,3 +4,7 @@
 
 # Vagrant
 .vagrant/
+
+# Atom
+.tags
+.tags1

@@ -1,3 +1,9 @@
+# Important
+The original image was changed to run php code by cron. So following changes were added to the original Dokerfile:
+* Base image was changed to `php`
+* Added php file
+* Changed start command
+
 # cron-docker-image
 
 Docker image to run cron inside the Docker container
@@ -17,7 +23,7 @@ COPY cron.d /etc/cron.d
 Then build and create container:
 
 ```bash
-docker build --tag my_cron .
+docker build --pull --tag dmitriy/mercury-metrics .
 docker run --detach --name cron my_cron
 ```
 
