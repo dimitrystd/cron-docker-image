@@ -4,6 +4,8 @@ The original image was changed to run php code by cron. So following changes wer
 * Added php file
 * Changed start command
 
+Below updated the original readme.
+
 # cron-docker-image
 
 Docker image to run cron inside the Docker container
@@ -23,8 +25,8 @@ COPY cron.d /etc/cron.d
 Then build and create container:
 
 ```bash
-docker build --pull --tag dmitriy/mercury-metrics .
-docker run --detach --name cron my_cron
+docker build --pull --rm --tag dmitriy/mercury-metrics .
+docker run -d --rm --name cron dmitriy/mercury-metrics
 ```
 
 ## Logs
@@ -42,7 +44,7 @@ docker logs --follow cron
 In addition to `cron.d` you can pass any cron job as argument(s) to the `start-cron` command at the moment of container creation (providing optional user with `-u`/`--user` option):
 
 ```bash
-docker run --detach --name cron renskiy/cron start-cron --user www-data \
+docker run -d --rm --name cron dmitriy/mercury-metrics --user www-data \
     "0 1 \* \* \* echo '01:00 AM' >> /var/log/cron.log 2>&1" \
     "0 0 1 1 \* echo 'Happy New Year!!' >> /var/log/cron.log 2>&1"
 ```
@@ -52,7 +54,7 @@ docker run --detach --name cron renskiy/cron start-cron --user www-data \
 Almost any environ variable you passed to the Docker will be visible to your cron scripts. With the exception of `$SHELL`, `$PATH`, `$PWD`, `$USER`, etc.
 
 ```bash
-docker run --tty --rm --interactive --env MY_VAR=foo renskiy/cron start-cron \
+docker run -it --rm --interactive -e MY_VAR=foo dmitriy/mercury-metrics start-cron \
     "\* \* \* \* \* env >> /var/log/cron.log 2>&1"
 ```
 
@@ -63,7 +65,7 @@ docker run --tty --rm --interactive --env MY_VAR=foo renskiy/cron start-cron \
 This Environ variable let you provide custom directory for your `cron.d` scripts which will be placed instead of default `/etc/cron.d`:
 
 ```bash
-docker run --detach --name cron --env CRON_PATH=/etc/my_app/cron.d renskiy/cron
+docker run -d --name cron -e CRON_PATH=/etc/my_app/cron.d dmitriy/mercury-metrics
 ```
 
 This is very useful when you planning to create more then one Docker container from a single image.
